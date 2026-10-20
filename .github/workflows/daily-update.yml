@@ -3,18 +3,12 @@ name: Daily Project Update
 
 on:
   schedule:
-    - cron: "0 13 * * *"
-    - cron: "30 14 * * *"
-    - cron: "0 16 * * *"
-    - cron: "30 17 * * *"
-    - cron: "0 19 * * *"
-    - cron: "30 20 * * *"
+    - cron: "*/30 * * * *"
   workflow_dispatch:
 
 permissions:
   contents: write
 
-# Prevent overlapping runs from pushing at the same time
 concurrency:
   group: daily-project-update-main
   cancel-in-progress: false
@@ -30,9 +24,6 @@ jobs:
           ref: main
           fetch-depth: 0
           persist-credentials: true
-
-      - name: Sync with latest main
-        run: git pull --rebase origin main
 
       - name: Update project file
         run: |
@@ -51,4 +42,5 @@ jobs:
           fi
 
           git commit -m "chore: automated project update"
+          git pull --rebase origin main
           git push origin main
