@@ -42,5 +42,10 @@ jobs:
           fi
 
           git commit -m "chore: automated project update"
-          git pull --rebase origin main
-          git push origin main
+
+          git fetch origin main
+          git rebase origin/main
+
+          git push origin HEAD:main
+        env:
+          GIT_TERMINAL_PROMPT: 0
